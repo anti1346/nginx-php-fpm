@@ -2,6 +2,10 @@
 pipeline {
     agent any
     stages {
+        stage('Clone') {
+            checkout scm
+        }
+
         stage('Test') {
             steps {
                 sh 'echo "Fail!"; exit 1'
