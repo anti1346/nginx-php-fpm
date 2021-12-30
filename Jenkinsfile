@@ -3,7 +3,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('github glone') {
+            checkout scm
+        }
+        stage('docker build') {
             steps {
                 echo 'Building..'
             }
