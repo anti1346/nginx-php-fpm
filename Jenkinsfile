@@ -20,6 +20,10 @@ pipeline {
       }
     }
 
+    stage('Build image') {
+      app = docker.build("anti1346/nginx-php-fpm:$BUILD_NUMBER")
+    }
+    
     stage('build') {
       steps {
         sh 'echo "build..."'
