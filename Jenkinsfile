@@ -1,11 +1,12 @@
 //Jenkinsfile (Declarative Pipeline)
 node {
-    stage('start') {
-        agent any
+    environment {
+        SLACK_CHANNEL = '#alert_cicd'
+    }
 
+    stage('start') {
         steps {
-            slackSend (channel: '#migrator', color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }
+            slackSend (channel: SLACK_CHANNEL, color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
     }
 
     stage('git clone(github)') {
@@ -23,7 +24,7 @@ node {
             echo 'Testing..'
         }
     }
-    
+
     stage('Deploy') {
         steps {
             echo 'Deploying....'
