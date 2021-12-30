@@ -1,7 +1,5 @@
 //Jenkinsfile (Declarative Pipeline)
-pipeline {
-    agent any
-
+node {
     stages {
         stage('github glone') {
             checkout scm
