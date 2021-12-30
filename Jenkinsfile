@@ -16,5 +16,29 @@ pipeline {
       }
     }
 
+    stage('build') {
+      steps {
+        sh 'echo "build..."'
+      }
+    }
+
+    stage('push') {
+      steps {
+        sh 'echo "docker images push"'
+      }
+    }
+
+    stage('test') {
+      steps {
+        sh 'echo "test"'
+      }
+    }
+
+    stage('deploy') {
+      steps {
+        sh 'echo "deploy..."'
+      }
+    }
+
   }
 }
