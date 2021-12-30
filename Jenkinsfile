@@ -10,5 +10,11 @@ pipeline {
       }
     }
 
+    stage('slack send') {
+      steps {
+        slackSend(channel: '#alert-cicd', notifyCommitters: true, replyBroadcast: true, sendAsText: true, username: 'Jenkins Blue Ocean')
+      }
+    }
+
   }
 }
