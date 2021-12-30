@@ -1,33 +1,18 @@
-//Jenkinsfile (Declarative Pipeline)
-environment {
-    SLACK_CHANNEL = '#alert_cicd'
-}
-
+//Jenkinsfile
 node {
-    stage('start') {
-        steps {
-            slackSend (channel: SLACK_CHANNEL, color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    stage("Start"){
+        echo "Hello"
     }
-
-    stage('git clone(github)') {
+    stage("Clone"){
         checkout scm
     }
-
-    stage('docker build') {
-        steps {
-            echo 'Building..'
-        }
+    stage("Build"){
+        echo "Building.."
     }
-
-    stage('Test') {
-        steps {
-            echo 'Testing..'
-        }
+    stage("Test"){
+        echo "Testing.."
     }
-
-    stage('Deploy') {
-        steps {
-            echo 'Deploying....'
-        }
+    stage("Deploy"){
+        echo "Deploying...."
     }
 }
