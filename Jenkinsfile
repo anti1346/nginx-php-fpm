@@ -1,7 +1,7 @@
 //Jenkinsfile (Declarative Pipeline)
 node {
     stages {
-        stage('github glone') {
+        stage('git clone(github)') {
             checkout scm
         }
         stage('docker build') {
