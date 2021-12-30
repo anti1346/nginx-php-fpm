@@ -7,6 +7,12 @@ pipeline {
     }
 
     stages {
+        stage('Start') {
+            steps {
+                slackSend (channel: SLACK_CHANNEL, color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})") 
+            }
+        }
+
         stage('Clone') {
             checkout scm
         }
