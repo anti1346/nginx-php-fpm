@@ -20,7 +20,7 @@ pipeline {
       }
     }
 
-    stage('Build image') {
+    stage('docker image build') {
       steps {
         sh 'docker build --tag anti1346/nginx-phpfpm:0.0.1 .'
       }
@@ -50,5 +50,12 @@ pipeline {
       }
     }
 
+  }
+  
+  stage('=========> Push image') {
+      docker.withRegistry('https://registry.hub.docker.com', 'dockerimagepush') { //Jenkins Credential 정보
+          app.push("${env.BUILD_NUMBER}") //빌드 번호
+          app.push("latest") //태그 정보
+      }
   }
 }
