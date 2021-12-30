@@ -1,5 +1,10 @@
 pipeline {
   agent any
+
+  environment {
+    SLACK_CHANNEL = '#alert-cicd'
+  }
+
   stages {
     stage('date') {
       steps {
@@ -39,8 +44,5 @@ pipeline {
       }
     }
 
-  }
-  environment {
-    SLACK_CHANNEL = '#alert-cicd'
   }
 }
