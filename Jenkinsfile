@@ -6,10 +6,6 @@ pipeline {
   }
 
   stages {
-    stage('clone') {
-      checkout scm
-    }
-
     stage('date') {
       steps {
         timestamps() {
