@@ -6,7 +6,6 @@ pipeline {
         timestamps() {
           sh 'date'
         }
-
       }
     }
 
