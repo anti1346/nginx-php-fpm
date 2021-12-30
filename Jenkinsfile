@@ -22,9 +22,20 @@ pipeline {
 
     stage('docker image build') {
       steps {
-        sh 'docker build --tag anti1346/nginx-phpfpm:0.0.1 .'
+        sh 'docker build --tag anti1346/nginx-phpfpm:latest .'
       }
     }
+
+
+    stage('docker run') {
+      steps {
+        sh 'docker ps -f name=anti1346/nginx-phpfpm -q | xargs --no-run-if-empty docker container stop'
+        sh 'docker container ls -a -fname=anti1346/nginx-phpfpm -q | xargs -r docker container rm'
+        sh 'docker rmi $(docker images -f "dangling=true" -q)'
+        sh 'docker run -d --name anti1346/nginx-phpfpm -p 8080:8080 anti1346/nginx-phpfpm:latest'
+      }
+    }
+
 
     stage('build') {
       steps {
@@ -50,12 +61,5 @@ pipeline {
       }
     }
 
-  }
-  
-  stage('=========> Push image') {
-      docker.withRegistry('https://registry.hub.docker.com', 'dockerimagepush') { //Jenkins Credential 정보
-          app.push("${env.BUILD_NUMBER}") //빌드 번호
-          app.push("latest") //태그 정보
-      }
   }
 }
