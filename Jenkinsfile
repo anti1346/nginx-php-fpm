@@ -1,6 +1,11 @@
 //Jenkinsfile
 pipeline {
-    agent any
+    agent none
+    
+    environment {
+        SLACK_CHANNEL = '#alert-cicd'
+    }
+
     stages {
         stage('Clone') {
             checkout scm
