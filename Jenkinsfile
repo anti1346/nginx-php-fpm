@@ -16,7 +16,7 @@ pipeline {
 
     stage('slack send') {
       steps {
-        slackSend(channel: '${SLACK_CHANNEL} ', notifyCommitters: true, replyBroadcast: true, sendAsText: true, username: 'Jenkins Blue Ocean')
+        slackSend(channel: '${SLACK_CHANNEL}', notifyCommitters: true, replyBroadcast: true, sendAsText: true, username: 'Jenkins Blue Ocean')
       }
     }
 
