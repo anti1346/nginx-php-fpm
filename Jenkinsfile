@@ -34,16 +34,13 @@ pipeline {
 
     stage('docker container test') {
       steps {
-        sh '''checkServer(){
-        response=$(curl --max-time 20 --connect-timeout 0  --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
-        if [ "$response" = "200" ];
-          then echo "`date --rfc-3339=seconds` -  Server is healthy, up and running"
-          return 0
-        else
-          echo "`date --rfc-3339=seconds` -  Server is not healthy(response code - $response ), server is going to restrat"
-          startTomcat
+        sh '''
+        RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
+        if [ $RESPONSE -ne 200 ]
+          then
+          echo localhost:8888 is down
         fi
-        }'''
+        '''
         }
       }
 
