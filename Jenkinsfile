@@ -41,6 +41,7 @@ pipeline {
         fi
         '''
       }
+    }
 
       stage('push') {
         steps {
