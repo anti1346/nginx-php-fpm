@@ -36,18 +36,14 @@ pipeline {
       steps {
         sh '''checkServer(){
         response=$(curl --max-time 20 --connect-timeout 0  --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
-
-        
-
-if [ "$response" = "200" ];
-           then echo "`date --rfc-3339=seconds` -  Server is healthy, up and running"
-           return 0
+        if [ "$response" = "200" ];
+          then echo "`date --rfc-3339=seconds` -  Server is healthy, up and running"
+          return 0
         else
-           echo "`date --rfc-3339=seconds` -  Server is not healthy(response code - $response ), server is going to restrat"
-           startTomcat
+          echo "`date --rfc-3339=seconds` -  Server is not healthy(response code - $response ), server is going to restrat"
+          startTomcat
         fi
-}
-'''
+        }'''
         }
       }
 
