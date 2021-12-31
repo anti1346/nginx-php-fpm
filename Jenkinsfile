@@ -28,9 +28,6 @@ pipeline {
 
     stage('docker run') {
       steps {
-        sh 'docker rm -f $(docker ps -q --filter="name=nginx-phpfpm")'
-      }
-      steps {
         sh 'docker ps -f name=anti1346/nginx-phpfpm -q | xargs --no-run-if-empty docker container stop'
         sh 'docker container ls -a -fname=anti1346/nginx-phpfpm -q | xargs -r docker container rm'
         sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
