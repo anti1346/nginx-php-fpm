@@ -92,6 +92,7 @@ RUN curl -Ssf https://getcomposer.org/installer -o /tmp/composer-setup.php \
 COPY ./${confdir}/nginx.conf /etc/nginx/nginx.conf
 COPY ./${confdir}/default.conf /etc/nginx/conf.d/default.conf
 # COPY ./${confdir}/html /usr/share/nginx/html
+RUN curl -s ifconfig.io > /usr/share/nginx/html/test.html
 COPY ./${confdir}/test.php /usr/share/nginx/html/test.php
 
 # PHP
