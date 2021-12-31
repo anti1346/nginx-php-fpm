@@ -6,6 +6,7 @@ pipeline {
         timestamps() {
           sh 'date'
         }
+
       }
     }
 
@@ -24,8 +25,6 @@ pipeline {
     stage('docker run') {
       steps {
         sh 'docker rm -f $(docker ps -q --filter="name=nginx-php-fpm") || true'
-        //sh 'docker ps -f name=anti1346/nginx-php-fpm -q | xargs --no-run-if-empty docker container stop'
-        //sh 'docker container ls -a -fname=anti1346/nginx-php-fpm -q | xargs -r docker container rm'
         sh 'docker rmi $(docker images -f "dangling=true" -q) || true'
         sh 'docker run -d --name nginx-php-fpm -p 8888:80 anti1346/nginx-php-fpm:latest'
       }
@@ -40,29 +39,34 @@ pipeline {
           echo localhost:8888 is down
         fi
         '''
+        sh '''PHP-FPM=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
+        if [ $PHPFPM -ne 200 ]
+          then
+          echo localhost:8888 is down
+        fi'''
       }
     }
 
-      stage('push') {
-        steps {
-          sh 'echo "docker images push"'
-        }
+    stage('push') {
+      steps {
+        sh 'echo "docker images push"'
       }
-
-      stage('test') {
-        steps {
-          sh 'echo "test"'
-        }
-      }
-
-      stage('deploy') {
-        steps {
-          sh 'echo "deploy..."'
-        }
-      }
-
     }
-    environment {
-      SLACK_CHANNEL = '#alert-cicd'
+
+    stage('test') {
+      steps {
+        sh 'echo "test"'
+      }
     }
+
+    stage('deploy') {
+      steps {
+        sh 'echo "deploy..."'
+      }
+    }
+
   }
+  environment {
+    SLACK_CHANNEL = '#alert-cicd'
+  }
+}
