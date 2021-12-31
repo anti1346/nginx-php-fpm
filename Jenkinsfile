@@ -35,14 +35,6 @@ pipeline {
     stage('docker container test') {
       steps {
         sh '''
-        RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888)
-        if [ $RESPONSE -ne 200 ]
-          then
-          echo localhost:8888 is down
-        fi
-        '''
-        }
-        sh '''
         RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
         if [ $RESPONSE -ne 200 ]
           then
