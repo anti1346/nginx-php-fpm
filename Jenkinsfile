@@ -32,7 +32,7 @@ pipeline {
 
     stage('docker container test') {
       steps {
-        sh '''NGINX=$(curl --write-out %{http_code} --silent --output /dev/null localhost/:8888/test.html)
+        sh '''NGINX=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.html)
         if [ $NGINX -ne 200 ]
           then
           echo localhost(nginx) is down
