@@ -32,17 +32,16 @@ pipeline {
 
     stage('docker container test') {
       steps {
-        sh '''
-        RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
-        if [ $RESPONSE -ne 200 ]
+        sh '''NGINX=$(curl --write-out %{http_code} --silent --output /dev/null localhost)
+        if [ $NGINX -ne 200 ]
           then
-          echo localhost:8888 is down
+          echo localhost(nginx) is down
         fi
         '''
         sh '''PHP-FPM=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
         if [ $PHPFPM -ne 200 ]
           then
-          echo localhost:8888 is down
+          echo localhost(php-fpm) is down
         fi'''
       }
     }
