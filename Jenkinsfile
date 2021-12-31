@@ -34,30 +34,43 @@ pipeline {
 
     stage('docker container test') {
       steps {
-        sh 'echo "build..."'
-      }
-    }
+        sh '''checkServer(){
+        response=$(curl --max-time 20 --connect-timeout 0  --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
 
-    stage('push') {
-      steps {
-        sh 'echo "docker images push"'
-      }
-    }
+        
 
-    stage('test') {
-      steps {
-        sh 'echo "test"'
-      }
-    }
-
-    stage('deploy') {
-      steps {
-        sh 'echo "deploy..."'
-      }
-    }
-
-  }
-  environment {
-    SLACK_CHANNEL = '#alert-cicd'
-  }
+if [ "$response" = "200" ];
+           then echo "`date --rfc-3339=seconds` -  Server is healthy, up and running"
+           return 0
+        else
+           echo "`date --rfc-3339=seconds` -  Server is not healthy(response code - $response ), server is going to restrat"
+           startTomcat
+        fi
 }
+'''
+        }
+      }
+
+      stage('push') {
+        steps {
+          sh 'echo "docker images push"'
+        }
+      }
+
+      stage('test') {
+        steps {
+          sh 'echo "test"'
+        }
+      }
+
+      stage('deploy') {
+        steps {
+          sh 'echo "deploy..."'
+        }
+      }
+
+    }
+    environment {
+      SLACK_CHANNEL = '#alert-cicd'
+    }
+  }
