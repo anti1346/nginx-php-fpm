@@ -32,7 +32,7 @@ pipeline {
       }
     }
 
-    stage('build') {
+    stage('docker container test') {
       steps {
         sh 'echo "build..."'
       }
