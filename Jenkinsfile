@@ -1,16 +1,12 @@
 pipeline {
   agent any
-
-  environment {
-    SLACK_CHANNEL = '#alert-cicd'
-  }
-
   stages {
     stage('date') {
       steps {
         timestamps() {
           sh 'date'
         }
+
       }
     }
 
@@ -23,6 +19,7 @@ pipeline {
     stage('docker image build') {
       steps {
         sh 'docker build --tag anti1346/nginx-phpfpm:latest .'
+        sh 'docker rm -f $(docker ps -q --filter="name=nginx-phpfpm")'
       }
     }
 
@@ -59,5 +56,8 @@ pipeline {
       }
     }
 
+  }
+  environment {
+    SLACK_CHANNEL = '#alert-cicd'
   }
 }
