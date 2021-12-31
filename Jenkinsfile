@@ -30,19 +30,29 @@ pipeline {
       }
     }
 
-    stage('docker container test') {
+    // stage('docker container test') {
+    //   steps {
+    //     sh '''NGINX=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.html)
+    //     if [ $NGINX -ne 200 ]
+    //       then
+    //       echo localhost(nginx) is down
+    //     fi
+    //     '''
+    //     sh '''PHP-FPM=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
+    //     if [ $PHPFPM -ne 200 ]
+    //       then
+    //       echo localhost(php-fpm) is down
+    //     fi'''
+    //   }
+    // }
+
+    stage("Using curl example") {
       steps {
-        sh '''NGINX=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.html)
-        if [ $NGINX -ne 200 ]
-          then
-          echo localhost(nginx) is down
-        fi
-        '''
-        sh '''PHP-FPM=$(curl --write-out %{http_code} --silent --output /dev/null localhost:8888/test.php)
-        if [ $PHPFPM -ne 200 ]
-          then
-          echo localhost(php-fpm) is down
-        fi'''
+        script {
+          final String url = "localhost:8888/test.html"
+          final String response = sh(script: "curl -s $url", returnStdout: true).trim()
+          echo response
+        }
       }
     }
 
